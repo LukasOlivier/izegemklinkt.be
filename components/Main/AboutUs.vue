@@ -6,7 +6,7 @@
   >
     <div class="sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
       <h2 class="mb-2 text-6xl font-bold text-white">Ons Verhaal</h2>
-      <p class="mb-4 text-lg">
+      <p class="mb-4">
         Welkom bij Izegem Klinkt, een betoverende muzikale tournée in de
         Pekkersstad. Al meer dan 30 edities lang vieren we muziek, gezelligheid
         en samenzijn, en dat allemaal dankzij het toegewijde werk van
