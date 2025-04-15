@@ -2,7 +2,7 @@
   <div class="lg:hidden xl:hidden">
     <button
       aria-label="Open mobile menu"
-      class="relative z-50 mb-10 flex justify-end px-7 pt-5 hover:cursor-pointer"
+      class="fixed right-0 top-0 z-50 mb-10 flex justify-end px-7 pt-5 hover:cursor-pointer"
       @click="isMobileMenuOpen = !isMobileMenuOpen"
     >
       <template v-if="isMobileMenuOpen">
@@ -36,7 +36,7 @@
     </button>
     <header
       :class="{ hidden: !isMobileMenuOpen }"
-      class="absolute right-0 top-0 z-40 flex h-svh w-2/3 flex-row justify-end bg-black bg-opacity-95 px-10 py-10"
+      class="fixed right-0 top-0 z-40 flex h-screen w-2/3 flex-row justify-end bg-black bg-opacity-95 px-10 py-10"
     >
       <nav class="relative z-40 mt-10 flex flex-col items-end">
         <ul class="z-40 flex flex-col gap-10 text-right">
