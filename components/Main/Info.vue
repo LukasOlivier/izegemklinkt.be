@@ -22,7 +22,10 @@
         <br /><br />
         Waarheen de muzikale avond u verder brengt, bepaalt u uiteraard volledig
         zelf. Het plannetje
-        <a href="#info" class="underline" @click="showNotAvailableMessage"
+        <a
+          href="/BOEKJE-IZEGEMKLINKT-2025.pdf"
+          class="underline"
+          target="_blank"
           >binnenin dit boekje</a
         >
         brengt u probleemloos waar u wil. Een gouden tip : neem even de tijd om
@@ -45,19 +48,9 @@
     <div
       class="w-1/4 -rotate-2 object-cover transition-transform duration-500 ease-in-out hover:rotate-0 sm:hidden md:hidden lg:block"
     >
-      <a href="#info" @click="showNotAvailableMessage"
-        ><img src="/images/boekje.webp" alt="boekje"
+      <a href="/BOEKJE-IZEGEMKLINKT-2025.pdf" target="_blank">
+        <NuxtImg src="/images/boekje.webp" alt="boekje"
       /></a>
     </div>
   </section>
 </template>
-
-<script>
-export default {
-  methods: {
-    showNotAvailableMessage() {
-      alert("Het boekje voor 2025 is nog niet beschikbaar.");
-    },
-  },
-};
-</script>

@@ -4,7 +4,7 @@
     <HamburgerMenu />
     <div class="mx-auto flex w-9/12 flex-col">
       <h1 class="mb-10 mt-20 text-5xl font-bold text-white">Programma</h1>
-      <a class="underline" href="#" @click="showNotAvailableMessage">
+      <a class="underline" target="_blank" href="/BOEKJE-IZEGEMKLINKT-2025.pdf">
         <h2 class="mb-10 text-2xl font-bold text-white">
           Download hier het programmaboekje
         </h2>
@@ -99,10 +99,6 @@ useHead({
   ],
   link: [{ rel: "canonical", href: "https://www.izegemklinkt.be/programma" }],
 });
-
-const showNotAvailableMessage = () => {
-  alert("Het boekje voor 2025 is nog niet beschikbaar.");
-};
 </script>
 
 <style scoped>
