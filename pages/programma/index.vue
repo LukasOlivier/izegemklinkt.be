@@ -10,8 +10,11 @@
         </h2>
       </a>
 
-      <!-- Year tabs -->
-      <div class="mb-8 border-b border-gray-200">
+      <!-- Year tabs - Only show if we have bands -->
+      <div
+        v-if="Object.keys(bands).length > 0 && !isLoading"
+        class="mb-8 border-b border-gray-200"
+      >
         <ul class="-mb-px flex flex-wrap text-center text-sm font-medium">
           <li v-for="year in years" :key="year" class="mr-2">
             <button
@@ -34,25 +37,37 @@
         <div
           v-if="bands[selectedYear]?.length > 0"
           :key="selectedYear"
-          class="mx-auto grid w-full grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          class="mx-auto grid w-full grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
         >
           <div
             v-for="lineUpItem in bands[selectedYear]"
             :key="lineUpItem.lookupName"
-            class="flex justify-center"
+            class="flex w-full justify-center"
           >
-            <BandCard
-              :location="lineUpItem.location"
-              :band-photo="lineUpItem.bandPhoto"
-              :band-name="lineUpItem.bandName"
-              :time="lineUpItem.time"
-              :lookup-name="lineUpItem.lookupName"
-            />
+            <div class="w-full max-w-xs">
+              <BandCard
+                :location="lineUpItem.location"
+                :band-photo="lineUpItem.bandPhoto"
+                :band-name="lineUpItem.bandName"
+                :time="lineUpItem.time"
+                :lookup-name="lineUpItem.lookupName"
+              />
+            </div>
           </div>
+        </div>
+        <div v-else-if="isLoading" key="loading" class="min-h-64">
+          <p class="w-full text-center text-2xl font-semibold text-white">
+            Bands ophalen...
+          </p>
+        </div>
+        <div v-else-if="hasError" key="error" class="min-h-64">
+          <p class="w-full text-center text-2xl font-semibold text-white">
+            Er is een probleem opgetreden bij het laden van de bands.
+          </p>
         </div>
         <div v-else key="no-bands" class="min-h-64">
           <p class="w-full text-center text-2xl font-semibold text-white">
-            Bands ophalen...
+            Geen bands gevonden voor {{ selectedYear }}.
           </p>
         </div>
       </transition>
@@ -62,16 +77,34 @@
 </template>
 
 <script setup>
-const bands = ref({
-  2024: [],
-  2025: [],
-});
+const bands = ref({});
 const years = computed(() => Object.keys(bands.value).sort().reverse());
-const selectedYear = ref("2025");
+const selectedYear = ref("");
+const isLoading = ref(true);
+const hasError = ref(false);
 
 onMounted(async () => {
-  const importedBands = await import("~/data/bands").then((m) => m.default);
-  bands.value = importedBands;
+  try {
+    isLoading.value = true;
+    const fetchedBands = await useBands();
+
+    // Only update bands if we actually got data
+    if (fetchedBands && Object.keys(fetchedBands).length > 0) {
+      bands.value = fetchedBands;
+      // Set default selected year to the most recent one
+      if (years.value.length > 0) {
+        selectedYear.value = years.value[0];
+      }
+    } else {
+      console.error("No bands data returned from useBands()");
+      hasError.value = true;
+    }
+  } catch (error) {
+    console.error("Failed to fetch bands:", error);
+    hasError.value = true;
+  } finally {
+    isLoading.value = false;
+  }
 });
 
 useHead({

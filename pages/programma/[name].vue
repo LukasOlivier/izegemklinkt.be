@@ -7,8 +7,47 @@
     <div
       class="mx-auto px-4 pb-20 pt-20 sm:w-11/12 md:w-9/12 md:pt-32 lg:pt-40"
     >
+      <!-- Loading state -->
+      <div
+        v-if="isLoading"
+        class="flex min-h-[60vh] items-center justify-center"
+      >
+        <p class="text-center text-2xl font-semibold text-white">
+          Band informatie laden...
+        </p>
+      </div>
+
+      <!-- Error state -->
+      <div
+        v-else-if="hasError"
+        class="flex min-h-[60vh] items-center justify-center"
+      >
+        <p class="text-center text-2xl font-semibold text-white">
+          Er is een probleem opgetreden bij het laden van de band informatie.
+          <br />
+          <NuxtLink to="/programma" class="mt-4 inline-block underline">
+            Terug naar programma overzicht
+          </NuxtLink>
+        </p>
+      </div>
+
+      <!-- Band not found -->
+      <div
+        v-else-if="!bandDetails"
+        class="flex min-h-[60vh] items-center justify-center"
+      >
+        <p class="text-center text-2xl font-semibold text-white">
+          Band niet gevonden.
+          <br />
+          <NuxtLink to="/programma" class="mt-4 inline-block underline">
+            Terug naar programma overzicht
+          </NuxtLink>
+        </p>
+      </div>
+
       <!-- Band information section -->
       <div
+        v-else
         class="flex gap-6 sm:flex-col md:gap-8 lg:gap-12 xl:flex-row xl:gap-16"
       >
         <!-- Band details -->
@@ -123,23 +162,26 @@
 </template>
 
 <script setup>
-const bands = ref({
-  2024: [],
-  2025: [],
-});
-
-onMounted(async () => {
-  const importedBands = await import("~/data/bands").then((m) => m.default);
-  bands.value = importedBands;
-});
-
 const route = useRoute();
 const bandName = route.params.name;
 
+const {
+  data: bands,
+  pending,
+  error,
+} = await useLazyAsyncData("bands", () => useBands());
+
+const isLoading = computed(() => pending.value);
+const hasError = computed(() => !!error.value);
+
 // Find the matching band across all years
 const bandDetails = computed(() => {
+  if (isLoading.value || hasError.value) return null;
+
   for (const year in bands.value) {
-    const band = bands.value[year].find((band) => band.lookupName === bandName);
+    const band = bands.value[year]?.find(
+      (band) => band.lookupName === bandName,
+    );
     if (band) {
       return band;
     }
@@ -158,9 +200,6 @@ const formattedDescription = computed(() => {
 
   return res;
 });
-
-// Add a reactive reference for loading state
-const isLoading = ref(true);
 
 // Watch for when bands are loaded
 watch(
@@ -250,13 +289,13 @@ watchEffect(() => {
         {
           property: "og:image",
           content:
-            "https://www.izegemklinkt.be/" + bandDetails.value.bandPhoto ||
+            bandDetails.value.bandPhoto ||
             "https://www.izegemklinkt.be/logo.png",
         },
         {
           name: "twitter:image",
           content:
-            "https://www.izegemklinkt.be/" + bandDetails.value.bandPhoto ||
+            bandDetails.value.bandPhoto ||
             "https://www.izegemklinkt.be/logo.png",
         },
         // Add structured data hints for search engines
