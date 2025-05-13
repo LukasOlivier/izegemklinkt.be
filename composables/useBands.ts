@@ -1,17 +1,5 @@
 import Papa from "papaparse";
-import { useFetch } from "#app";
-
-interface RawBand {
-  "Tijdstempel": string;
-  "Naam": string;
-  "Beschrijving": string;
-  "Foto": string;
-  "URL Website": string;
-  "URL Youtube filmpje": string;
-  "Plaats": string;
-  "Tijdstip": string;
-  "Jaar": string;
-}
+// Disclaimer: vibe coded using ChatGPT, but I (the author) have reviewed and tested the code to ensure it works as intended.
 
 interface Band {
   location: string;
@@ -34,11 +22,35 @@ function transformGoogleDriveUrl(url: string): string {
       return `https://lh3.googleusercontent.com/d/${fileIdMatch[1]}`;
     }
   }
-  // Return the original URL if it's not a Google Drive URL or if transformation fails
+  return "https://izegemklinkt.be" + url;
+}
+
+function transformYoutubeUrl(url: string): string {
+  if (!url) return url;
+
+  // Handle different YouTube URL patterns
+  const youtubeRegExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(youtubeRegExp);
+
+  if (match && match[2].length === 11) {
+    // Valid YouTube ID found (11 characters)
+    return `https://www.youtube-nocookie.com/embed/${match[2]}`;
+  }
+
+  // Return original URL if it's not a recognized YouTube URL
   return url;
 }
 
+// Add a cache variable outside the function
+let cachedBands: Record<string, Band[]> | null = null;
+
 export async function useBands(): Promise<Record<string, Band[]>> {
+  // Return cached data if available
+  if (cachedBands) {
+    return cachedBands;
+  }
+
   const csvUrl =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTCU39iFMnnZrOLFJG1wLrpK_8j-6CcBvB9tFU73swwyeOlOyLtvSwT6WStoYhi5VvG8JibOdtKOxeC/pub?gid=761994323&single=true&output=csv";
 
@@ -49,14 +61,14 @@ export async function useBands(): Promise<Record<string, Band[]>> {
 
   while (retryCount < MAX_RETRIES) {
     try {
-      const response = await useFetch<string>(csvUrl, {
+      // Replace useFetch with $fetch
+      csvData = await $fetch<string>(csvUrl, {
         responseType: "text",
-        key: `bands-csv-${Date.now()}`, // Unique key to prevent caching issues
-        cache: false, // Disable cache to ensure fresh data
+        headers: {
+          "Cache-Control": "no-cache", // Prevent caching
+        },
         timeout: 10000, // 10 second timeout
       });
-
-      csvData = response.data.value;
 
       if (csvData && csvData.length > 0) {
         break; // Successfully got data, exit retry loop
@@ -98,17 +110,11 @@ export async function useBands(): Promise<Record<string, Band[]>> {
     for (const row of parsed.data) {
       // Check if this row has the expected fields
       if (!row.Jaar && !row.Naam) {
-        console.warn("Row missing required fields:", row);
         continue;
       }
 
       const year = row.Jaar?.trim() || "";
       const name = row.Naam?.trim() || "";
-
-      if (!year || !name) {
-        console.warn("Skipping row with missing year or name:", row);
-        continue;
-      }
 
       const lookupName = name
         .toLowerCase()
@@ -122,7 +128,7 @@ export async function useBands(): Promise<Record<string, Band[]>> {
         bandPhoto: transformGoogleDriveUrl(row.Foto?.trim() || ""),
         bandName: name,
         website: row["URL Website"]?.trim() || null,
-        video: row["URL Youtube filmpje"]?.trim() || null,
+        video: transformYoutubeUrl(row["URL Youtube filmpje"]?.trim() || null),
         description: row.Beschrijving?.trim() || "",
         lookupName,
       };
@@ -131,9 +137,16 @@ export async function useBands(): Promise<Record<string, Band[]>> {
       byYear[year].push(band);
     }
 
+    // Cache the results before returning
+    cachedBands = byYear;
     return byYear;
   } catch (parseError) {
     console.error("Error parsing CSV:", parseError);
     return {};
   }
+}
+
+// Add a function to reset the cache if needed
+export function resetBandsCache() {
+  cachedBands = null;
 }

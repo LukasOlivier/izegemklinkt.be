@@ -42,15 +42,17 @@
           <div
             v-for="lineUpItem in bands[selectedYear]"
             :key="lineUpItem.lookupName"
-            class="flex justify-center"
+            class="flex w-full justify-center"
           >
-            <BandCard
-              :location="lineUpItem.location"
-              :band-photo="lineUpItem.bandPhoto"
-              :band-name="lineUpItem.bandName"
-              :time="lineUpItem.time"
-              :lookup-name="lineUpItem.lookupName"
-            />
+            <div class="w-full max-w-xs">
+              <BandCard
+                :location="lineUpItem.location"
+                :band-photo="lineUpItem.bandPhoto"
+                :band-name="lineUpItem.bandName"
+                :time="lineUpItem.time"
+                :lookup-name="lineUpItem.lookupName"
+              />
+            </div>
           </div>
         </div>
         <div v-else-if="isLoading" key="loading" class="min-h-64">
