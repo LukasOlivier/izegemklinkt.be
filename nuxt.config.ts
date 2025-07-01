@@ -28,68 +28,42 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: "nl",
       },
-      meta: [
-        { charset: "utf-8" },
-        // Add favicon configuration
-        { name: "msapplication-TileColor", content: "#ffffff" },
+
+      link: [
+        // Basic favicon
         { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+
+        // Standard sizes
         {
           rel: "icon",
           type: "image/png",
-          sizes: "32x32",
-          href: "/favicon-32x32.png",
+          sizes: "96x96",
+          href: "/favicon-96x96.png",
         },
-        {
-          rel: "icon",
-          type: "image/png",
-          sizes: "16x16",
-          href: "/favicon-16x16.png",
-        },
+
+        // Apple devices
         {
           rel: "apple-touch-icon",
           sizes: "180x180",
           href: "/apple-touch-icon.png",
         },
-        { rel: "manifest", href: "/site.webmanifest" },
 
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        // Android devices
         {
-          name: "description",
-          content:
-            "Izegem Klinkt - Muzikale Tournée in de Pekkersstad. Programma 4 mei 2025. Gratis toegang. 14 deelnemende cafés. 14 bands. 1 stad. 1 muzikale tournée.",
+          rel: "icon",
+          type: "image/png",
+          sizes: "192x192",
+          href: "/android-chrome-192x192.png",
         },
         {
-          name: "keywords",
-          content:
-            "Izegem Klinkt, Izegem, Muziek, Pekkersstad, Tournée, 4 mei 2025, Gratis, 14 cafés, 14 bands, 1 stad, 1 muzikale tournée, kroegentocht, tocht, kroegen, programma",
+          rel: "icon",
+          type: "image/png",
+          sizes: "512x512",
+          href: "/android-chrome-512x512.png",
         },
-        { hid: "og-type", property: "og:type", content: "website" },
-        {
-          hid: "og-title",
-          property: "og:title",
-          content: "Izegem Klinkt Programma",
-        },
-        {
-          hid: "og-desc",
-          property: "og:description",
-          content:
-            "Izegem Klinkt - Muzikale Tournée in de Pekkersstad. Programma 4 mei 2025. Gratis toegang. 14 deelnemende cafés. 14 bands. 1 stad. 1 muzikale tournée.",
-        },
-        {
-          hid: "og-image",
-          property: "og:image",
-          content: "https://www.izegemklinkt.be/logo.png",
-        },
-        {
-          hid: "og-url",
-          property: "og:url",
-          content: "https://www.izegemklinkt.be",
-        },
-        {
-          hid: "t-type",
-          name: "twitter:image",
-          content: "https://www.izegemklinkt.be/logo.png",
-        },
+
+        // Web App Manifest
+        { rel: "manifest", href: "/site.webmanifest" },
       ],
     },
   },
