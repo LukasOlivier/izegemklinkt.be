@@ -23,6 +23,21 @@
         {{ config.public.eventDate.toUpperCase() }} | GRATIS TOEGANG
       </h1>
 
+      <div class="z-30 mt-20 text-center" @click.stop>
+        <NuxtLink
+          to="/programma"
+          class="group relative inline-block overflow-hidden rounded-lg bg-white px-8 py-3 text-lg font-bold uppercase text-black shadow-lg transition-transform duration-200 hover:scale-105 hover:no-underline"
+        >
+          <span
+            class="absolute inset-0 h-full w-full origin-left scale-x-0 transform bg-primary transition-transform duration-300 ease-out group-hover:scale-x-100"
+          />
+          <span
+            class="font-grandstander relative z-10 text-2xl transition-colors duration-300 group-hover:text-white"
+            >Bekijk het programma</span
+          >
+        </NuxtLink>
+      </div>
+
       <!-- 
       <div class="mt-10 text-center text-2xl">
         <h2

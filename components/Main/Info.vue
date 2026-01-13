@@ -30,7 +30,10 @@
         >
         brengt u probleemloos waar u wil. Een gouden tip : neem even de tijd om
         het Izegem Klinkt-programma anno 2025 door te nemen, dit kan ook via
-        onze
+        <NuxtLink to="/programma" class="underline hover:text-gray-300"
+          >deze website</NuxtLink
+        >
+        of onze
         <a
           class="underline"
           href="https://www.facebook.com/izegemklinkt"

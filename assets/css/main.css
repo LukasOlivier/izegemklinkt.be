@@ -22,6 +22,10 @@ h6 {
   text-transform: uppercase;
 }
 
+.font-grandstander {
+  font-family: "Grandstander", serif;
+}
+
 ::-moz-selection {
   /* Code for Firefox */
   color: white;
