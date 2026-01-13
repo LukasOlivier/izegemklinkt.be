@@ -38,19 +38,27 @@
           >FB-pagina</a
         >. Zo mist u geen enkele favoriet en hoeft u de avond zelf alleen maar
         te genieten! <br /><br />
-        Het enige wat u nu nog hoeft te doen is 16 mei 2025 met stip in uw
-        agenda aanduiden. Kom erbij en wees welkom! Geniet met volle teugen van
-        Izegem Klinkt!
-        <br /><br />
+        Het enige wat u nu nog hoeft te doen is
+        {{ config.public.eventDate }} met stip in uw agenda aanduiden. Kom erbij
+        en wees welkom! Geniet met volle teugen van Izegem Klinkt! <br /><br />
         Wij wensen u veel leute en plezier, De Leutvrienden
       </p>
     </div>
     <div
       class="w-1/4 -rotate-2 object-cover transition-transform duration-500 ease-in-out hover:rotate-0 sm:hidden md:hidden lg:block"
     >
-      <a href="/BOEKJE-IZEGEMKLINKT-2025.pdf" target="_blank">
+      <a
+        :href="config.public.lineupPdfUrl"
+        @click.prevent="!config.public.lineupPdfUrl && showNotAvailableAlert()"
+        target="_blank"
+      >
         <NuxtImg src="/images/boekje.webp" alt="boekje"
       /></a>
     </div>
   </section>
 </template>
+
+<script setup>
+const config = useRuntimeConfig();
+const { showNotAvailableAlert } = useNotAvailableAlert();
+</script>

@@ -13,6 +13,13 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
   ],
 
+  runtimeConfig: {
+    public: {
+      eventDate: process.env.EVENT_DATE,
+      lineupPdfUrl: process.env.LINEUP_PDF_URL,
+    },
+  },
+
   // Nuxt Image module configuration
   image: {
     format: ["webp"],

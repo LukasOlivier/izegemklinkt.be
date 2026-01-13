@@ -22,7 +22,7 @@
             clip-rule="evenodd"
           />
         </svg>
-        <p class="text-xl">16 mei 2025</p>
+        <p class="text-xl">{{ config.public.eventDate }}</p>
         <p class="text-lg">19u00 - 01u00</p>
       </li>
       <li class="flex flex-col items-center justify-center">
@@ -62,3 +62,7 @@
     </ul>
   </section>
 </template>
+
+<script setup>
+const config = useRuntimeConfig();
+</script>

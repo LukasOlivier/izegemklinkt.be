@@ -20,7 +20,7 @@
     >
       <img class="hero-img z-30" src="/images/footer-logo.webp" alt="Logo" />
       <h1 class="mt-6 text-center text-4xl font-bold">
-        16 MEI | GRATIS TOEGANG
+        {{ config.public.eventDate.toUpperCase() }} | GRATIS TOEGANG
       </h1>
 
       <!-- 
@@ -48,6 +48,7 @@
 
 <script setup>
 import { ref } from "vue";
+const config = useRuntimeConfig();
 
 const videoPlayer = ref(null);
 
