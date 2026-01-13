@@ -8,7 +8,8 @@
       <p class="text-lg leading-relaxed">
         Beste Pekker, dag muziekliefhebber, Jawel, we zijn er weer klaar voor!
         Met trots presenteren wij u onze
-        <span class="font-bold">34ste 'Izegem klinkt'</span>, ook dit keer
+        <span class="font-bold">{{ edition }}ste 'Izegem klinkt'</span>, ook dit
+        keer
         <span class="font-bold"> gratis en voor niets!</span>
         <br />
         <br />
@@ -23,16 +24,18 @@
         Waarheen de muzikale avond u verder brengt, bepaalt u uiteraard volledig
         zelf. Het plannetje
         <a
-          href="/BOEKJE-IZEGEMKLINKT-2025.pdf"
           class="underline"
           target="_blank"
-          >binnenin dit boekje</a
+          :href="config.public.lineupPdfUrl"
+          @click.prevent="
+            !config.public.lineupPdfUrl && showNotAvailableAlert()
+          "
+        >
+          binnenin dit boekje</a
         >
         brengt u probleemloos waar u wil. Een gouden tip : neem even de tijd om
         het Izegem Klinkt-programma anno 2025 door te nemen, dit kan ook via
-        <NuxtLink to="/programma" class="underline hover:text-gray-300"
-          >deze website</NuxtLink
-        >
+        <NuxtLink to="/programma" class="underline">deze website</NuxtLink>
         of onze
         <a
           class="underline"
@@ -64,4 +67,5 @@
 <script setup>
 const config = useRuntimeConfig();
 const { showNotAvailableAlert } = useNotAvailableAlert();
+const edition = new Date().getFullYear() - 1991;
 </script>
